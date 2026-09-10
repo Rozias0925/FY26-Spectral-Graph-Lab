@@ -6,7 +6,7 @@ const finiteOr=(x,fallback)=>Number.isFinite(x)?x:fallback;
 function settingsFor(analysis,settings={}){
  const maxDegree=Math.max(0,...analysis.degree);
  const fraction=Math.min(1,Math.max(0,finiteOr(settings.alphaFraction,.5)));
- const steps=Math.min(3,Math.max(0,Math.floor(finiteOr(settings.steps,1))));
+ const steps=Math.min(12,Math.max(0,Math.floor(finiteOr(settings.steps,1))));
  return {maxDegree,alphaFraction:fraction,alpha:maxDegree>0?fraction/maxDegree:0,steps};
 }
 function coefficients(alpha,steps){

@@ -48,7 +48,7 @@ function restore(state,saved){
   const convolution=saved.convolutionLab;
   if(convolution){
     if(Number.isFinite(convolution.alphaFraction)&&convolution.alphaFraction>=0&&convolution.alphaFraction<=1)state.convolutionLab.alphaFraction=convolution.alphaFraction;
-    for(const [key,max]of [['steps',3],['selected',39]])if(Number.isInteger(convolution[key])&&convolution[key]>=0&&convolution[key]<=max)state.convolutionLab[key]=convolution[key];
+    for(const [key,max]of [['steps',12],['selected',39]])if(Number.isInteger(convolution[key])&&convolution[key]>=0&&convolution[key]<=max)state.convolutionLab[key]=convolution[key];
   }
   const c=saved.cluster;
   if(c&&Array.isArray(c.points)&&c.points.length>=8&&c.points.length<=120&&c.points.every(p=>Array.isArray(p)&&p.length===2&&p.every(Number.isFinite)))Object.assign(state.cluster,c);

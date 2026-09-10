@@ -5,12 +5,18 @@ test('spectral filtering equals repeated local multiplication on irregular weigh
  for(const kind of ['star','barbell','grid','disconnected']){
   const g=M.preset(kind);g.edges.forEach((e,i)=>e.w*=.2+(i%5)*.35);g.nodes.push({x:0,y:0});
   const a=M.analyze(g.nodes,g.edges),f=g.nodes.map((_,i)=>Math.sin(i*.7)+i*.02);
-  for(const alphaFraction of [0,.5,1])for(let steps=0;steps<=3;steps++){
+  for(const alphaFraction of [0,.5,1])for(const steps of [0,1,3,8,12]){
    const r=C.process(a,f,{alphaFraction,steps});assert.ok(r.difference<1e-8);
    r.output.forEach((x,i)=>near(x,r.spectral[i]));
    near(r.output.at(-1),f.at(-1));
   }
  }
+});
+test('repeated low-pass steps reduce variation and allow the over-smoothing experiment',()=>{
+ const g=path(8),a=M.analyze(g.nodes,g.edges),f=g.nodes.map((_,i)=>Math.sin(i*1.3));
+ const early=C.process(a,f,{steps:1,alphaFraction:.75}),late=C.process(a,f,{steps:12,alphaFraction:.75});
+ assert.equal(late.steps,12);assert.ok(M.energy(a.A,late.output)<M.energy(a.A,early.output));
+ assert.equal(C.process(a,f,{steps:99}).steps,12);
 });
 test('a degree-K polynomial cannot carry an impulse beyond K graph edges',()=>{
  const g=path(8),a=M.analyze(g.nodes,g.edges),f=[1,0,0,0,0,0,0,0],distances=C.hopDistances(a.A,0);
@@ -59,7 +65,7 @@ test('nonsymmetric or normalized eigensystems and invalid signals are rejected',
 test('evaluated bilingual view renders valid LaTeX and preserves the shared graph and Laplacian choice',()=>{
  const fs=require('node:fs'),vm=require('node:vm'),katex=require('../assets/vendor/katex/katex.min.js');
  const source=fs.readFileSync(require.resolve('../js/convolution-view.js'),'utf8');
- for(const lang of ['zh','en'])for(const count of [0,1,7])for(const steps of [0,1,3]){
+ for(const lang of ['zh','en'])for(const count of [0,1,7])for(const steps of [0,1,3,12]){
   const g=path(count);g.nodes.forEach((p,i)=>p.signal=Math.sin(i*.8));
   const original=JSON.stringify(g),state={lang,type:'randomwalk',graph:g,convolutionLab:{alphaFraction:.75,steps,selected:0},undoHistory:[]},elements=new Map(),formulas=[];
   const $=id=>{if(!elements.has(id))elements.set(id,{value:'',innerHTML:'',textContent:'',disabled:false});return elements.get(id);};
