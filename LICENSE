@@ -1,0 +1,24 @@
+Spectral Graph Lab — All Rights Reserved
+
+Copyright © 2026 文君豪. All Rights Reserved.
+
+Except for third-party material expressly identified below, all original source
+code, visual design, written explanations, documentation, and Rozias brand
+assets in this repository are protected by copyright.
+
+No permission is granted to copy, modify, adapt, distribute, sublicense, sell,
+or use this work to create derivative works without prior written permission
+from the copyright owner. Public availability of the repository does not grant
+an open-source license or any rights beyond those required by the GitHub Terms
+of Service for hosting and displaying the repository.
+
+This notice does not replace or restrict the separate terms that apply to:
+
+1. KaTeX and its fonts in assets/vendor/katex/, provided under the MIT License
+   included at assets/vendor/katex/LICENSE.
+2. Stanford Bunny-derived mesh data described in assets/mesh/SOURCE.md, which
+   remains subject to the source repository's attribution, research-use,
+   redistribution, and commercial-use conditions.
+
+For permissions concerning the original portions of Spectral Graph Lab,
+contact the copyright owner through the Researcher Profile linked by the site.

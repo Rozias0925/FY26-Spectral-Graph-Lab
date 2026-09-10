@@ -1,0 +1,10 @@
+cff-version: 1.2.0
+message: "If you use this teaching laboratory in academic work, please cite it as follows."
+title: "Spectral Graph Lab"
+type: software
+authors:
+  - family-names: "文"
+    given-names: "君豪"
+    alias: "Rozias"
+date-released: 2026-09-10
+abstract: "An interactive bilingual laboratory for graph Laplacians, spectral clustering, graph functions, variational principles, graph Fourier analysis, and graph convolution."
