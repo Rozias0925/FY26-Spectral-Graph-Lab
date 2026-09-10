@@ -14,17 +14,17 @@
 
 ## 上傳到 GitHub
 
-專案已包含 `.gitignore`、`.gitattributes`、`.nojekyll`、所有權聲明及第三方來源說明。建立一個空白 GitHub repository 後，在本資料夾執行：
+專案已包含 `.gitignore`、`.gitattributes`、`.nojekyll`、所有權聲明及第三方來源說明。若要從目前資料夾重新發布，請執行：
 
 ```bash
 git add .
 git commit -m "Publish Spectral Graph Lab"
 git branch -M main
-git remote add origin https://github.com/YOUR_ACCOUNT/YOUR_REPOSITORY.git
+git remote add origin https://github.com/Rozias0925/FY26-Spectral-Graph-Lab.git
 git push -u origin main
 ```
 
-把範例網址中的 `YOUR_ACCOUNT` 與 `YOUR_REPOSITORY` 換成自己的帳號與 repository 名稱。若要使用 GitHub Pages，網站入口就是 repository 根目錄的 `index.html`，不需要編譯。
+若遠端已經設定為這個 repository，可略過 `git remote add origin`。若要使用 GitHub Pages，網站入口就是 repository 根目錄的 `index.html`，不需要編譯。
 
 ## 從 00 到 08：從現象走向譜與變分原理
 
@@ -146,5 +146,3 @@ $$
 互動採用固定未正規化算子 $(I-\alpha L_0)^K$，可選 0–3 次，並將 $\alpha$ 限制在 $0\leq\alpha\leq1/d_{\max}$。單步為本節點與鄰居的非負加權平均；若圖沒有邊，取 $\alpha=0$。右側逐項列出所選節點的自我與鄰居貢獻，並比較局部算法和譜算法的逐點差異。一般多項式公式是概念延伸，這裡沒有獨立編輯任意階係數。
 
 `js/variational-math.js` 提供逐邊能量、投影與迭代；`js/signal-math.js` 提供訊號分解與濾波；`js/convolution-math.js` 提供譜／局部算法對照；`js/course.js` 管理 05–08 的路線與銜接文案。
-#   F Y 2 6 - S p e c t r a l - G r a p h - L a b  
- 

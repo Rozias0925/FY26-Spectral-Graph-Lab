@@ -14,17 +14,17 @@ Alternatively run `python -m http.server 8766 --bind 127.0.0.1` from this folder
 
 ## Upload to GitHub
 
-The project includes `.gitignore`, `.gitattributes`, `.nojekyll`, ownership terms, and third-party notices. After creating an empty GitHub repository, run these commands in this folder:
+The project includes `.gitignore`, `.gitattributes`, `.nojekyll`, ownership terms, and third-party notices. To publish the current folder again, run:
 
 ```bash
 git add .
 git commit -m "Publish Spectral Graph Lab"
 git branch -M main
-git remote add origin https://github.com/YOUR_ACCOUNT/YOUR_REPOSITORY.git
+git remote add origin https://github.com/Rozias0925/FY26-Spectral-Graph-Lab.git
 git push -u origin main
 ```
 
-Replace `YOUR_ACCOUNT` and `YOUR_REPOSITORY` with your GitHub account and repository name. For GitHub Pages, the site entry point is the root `index.html`; no compilation is required.
+If this remote is already configured, skip `git remote add origin`. For GitHub Pages, the site entry point is the root `index.html`; no compilation is required.
 
 ## From 00 to 08: from spectral observations to variational principles
 
