@@ -12,6 +12,12 @@ function energyDetails(analysis,f){
  for(let i=0;i<analysis.A.length;i++)for(let j=i+1;j<analysis.A.length;j++)if(analysis.A[i][j]>0)edges.push({a:i,b:j,w:analysis.A[i][j],difference:f[i]-f[j],energy:analysis.A[i][j]*(f[i]-f[j])**2});
  return {edges,total:edges.reduce((s,e)=>s+e.energy,0),quadratic:dot(f,multiply(analysis.raw,f))};
 }
+function createModeSnapshot(graph,analysis,index,kind='shared',type='unnormalized'){
+ if(type!=='unnormalized'||!Number.isInteger(index)||index<0||index>=analysis.values.length)return null;
+ const values=analysis.vectors[index],lambda=analysis.values[index];
+ if(!values||values.length!==graph.nodes.length||!values.length||!values.every(Number.isFinite)||!Number.isFinite(lambda))return null;
+ return {kind,index,lambda:Math.max(0,lambda),nodes:graph.nodes.map(p=>({x:p.x,y:p.y,...(Number.isFinite(p.z)?{z:p.z}:{})})),edges:graph.edges.map(e=>({a:e.a,b:e.b,w:e.w})),faces:(graph.faces||[]).map(f=>f.slice()),values:values.slice()};
+}
 function projectNormalize(values){
  if(values.length<2)return null;
  const mean=values.reduce((s,x)=>s+x,0)/values.length,projected=values.map(x=>x-mean),norm=Math.hypot(...projected);
@@ -50,6 +56,6 @@ function step(analysis,values){
  const gradient=multiply(analysis.raw,f).map(x=>2*x),eta=.45/lambdaMax;
  return projectNormalize(f.map((x,i)=>x-eta*gradient[i]))||f;
 }
-const api={teachingGraph,energyDetails,projectNormalize,initialize,targetSpace,diagnostics,step,dot,multiply};
+const api={teachingGraph,energyDetails,createModeSnapshot,projectNormalize,initialize,targetSpace,diagnostics,step,dot,multiply};
 if(typeof module==='object'&&module.exports)module.exports=api;else root.VariationalMath=api;
 })(typeof window!=='undefined'?window:globalThis);

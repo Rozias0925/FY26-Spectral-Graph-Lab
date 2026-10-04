@@ -5,6 +5,15 @@ function theoryDefaults(){return {variationalLab:{smoothSource:'path5',smoothVal
 function validGraph(g){
   return Boolean(g && Array.isArray(g.nodes) && g.nodes.length<=40 && g.nodes.every(p=>p&&Number.isFinite(p.x)&&Number.isFinite(p.y)) && Array.isArray(g.edges) && g.edges.every(e=>e&&Number.isInteger(e.a)&&Number.isInteger(e.b)&&e.a>=0&&e.b>=0&&e.a<g.nodes.length&&e.b<g.nodes.length&&e.a!==e.b&&Number.isFinite(e.w)&&e.w>=0&&e.w<=10));
 }
+function validModeSnapshot(mode){
+  if(!mode||!['shared','torus','sphere','grid','bunny'].includes(mode.kind)||!Array.isArray(mode.nodes)||!mode.nodes.length||mode.nodes.length>1024)return false;
+  const n=mode.nodes.length;
+  return Number.isInteger(mode.index)&&mode.index>=0&&mode.index<n&&Number.isFinite(mode.lambda)&&mode.lambda>=-1e-8&&
+    mode.nodes.every(p=>p&&Number.isFinite(p.x)&&Number.isFinite(p.y)&&(p.z===undefined||Number.isFinite(p.z)))&&
+    Array.isArray(mode.values)&&mode.values.length===n&&mode.values.every(v=>Number.isFinite(v)&&Math.abs(v)<=2)&&
+    Array.isArray(mode.edges)&&mode.edges.length<=8192&&mode.edges.every(e=>e&&Number.isInteger(e.a)&&Number.isInteger(e.b)&&e.a>=0&&e.b>=0&&e.a<n&&e.b<n&&e.a!==e.b&&Number.isFinite(e.w)&&e.w>=0&&e.w<=10)&&
+    (mode.faces===undefined||(Array.isArray(mode.faces)&&mode.faces.length<=4096&&mode.faces.every(f=>Array.isArray(f)&&f.length===3&&f.every(i=>Number.isInteger(i)&&i>=0&&i<n))));
+}
 function create(M,initial){
   const g=validGraph(initial)?structuredClone(initial):{nodes:[{x:170,y:190},{x:360,y:110},{x:550,y:190}],edges:[{a:0,b:1,w:1},{a:1,b:2,w:1}],preset:'custom',index:1};
   return {...theoryDefaults(),version:2,lang:'zh',module:'foundations',type:'unnormalized',graph:{...g,tool:'move',pending:null,selected:null,matrix:'L'},newWeight:1,bridgeWeight:1,edgeIndex:0,threshold:0,color:'continuous',signal:[1,1.1,1.2,1.3,1.4],setup:{step:0,i:0,j:1},spectralSignal:{view:'reconstruction',preset:'impulseSignal',selected:0,modes:4,filter:'heat',tau:1,cutoff:1,seed:7},cluster:{source:'shared',dataset:'moons',points:M.dataset(),method:'knn',neighbors:4,epsilon:.4,sigma:M.recommendSigma(M.dataset())||.1,k:2,type:'unnormalized',seed:7,tool:'move'},mesh:{kind:'shared',index:1,type:'unnormalized',rotation:[0,0],zoom:1,wire:true}};
@@ -31,7 +40,7 @@ function restore(state,saved){
   if(signal){
     if(['reconstruction','filtering'].includes(signal.view))state.spectralSignal.view=signal.view;
     for(const [key,min,max] of [['selected',0,39],['modes',0,40],['tau',0,10],['cutoff',0,1000],['seed',0,9999]])if(Number.isFinite(signal[key])&&signal[key]>=min&&signal[key]<=max)state.spectralSignal[key]=['selected','modes','seed'].includes(key)?Math.floor(signal[key]):signal[key];
-    if(['heat','highpass','ideal'].includes(signal.filter))state.spectralSignal.filter=signal.filter;
+    if(['heat','highpass','ideal','polynomial'].includes(signal.filter))state.spectralSignal.filter=signal.filter;
     if(['impulseSignal','constantSignal','alternatingSignal','noiseSignal','customSignal'].includes(signal.preset))state.spectralSignal.preset=signal.preset;
   }
   const defaults=theoryDefaults();
@@ -39,6 +48,12 @@ function restore(state,saved){
   const theory=saved.variationalLab;
   if(theory){
     for(const key of ['smoothSource','descentSource'])if(['path5','bridge6','shared'].includes(theory[key]))state.variationalLab[key]=theory[key];
+    if(validModeSnapshot(theory.modeSnapshot)){
+      state.variationalLab.modeSnapshot=structuredClone(theory.modeSnapshot);
+      if(theory.smoothSource==='ivMode')state.variationalLab.smoothSource='ivMode';
+      const values=theory.smoothValues?.ivMode;
+      if(Array.isArray(values)&&values.length===theory.modeSnapshot.nodes.length&&values.every(v=>Number.isFinite(v)&&Math.abs(v)<=2))state.variationalLab.smoothValues.ivMode=values.slice();
+    }
     for(const key of ['descentSeed','descentIteration'])if(Number.isInteger(theory[key])&&theory[key]>=0&&theory[key]<=100000)state.variationalLab[key]=theory[key];
     if(typeof theory.descentGraphKey==='string')state.variationalLab.descentGraphKey=theory.descentGraphKey.slice(0,40000);
     if(Array.isArray(theory.descentValues)&&theory.descentValues.length<=40&&theory.descentValues.every(Number.isFinite))state.variationalLab.descentValues=theory.descentValues.slice();
