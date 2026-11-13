@@ -1,5 +1,10 @@
 # Spectral Graph Lab
 
+## At a glance for reviewers
+
+**Project type:** original interactive mathematical software, not a trained-GNN benchmark. **What it demonstrates:** graph Laplacians, eigendecomposition, spectral clustering, variational energy, Fourier filtering, and their link to local graph operations. **Suggested first visit:** [open the lab](https://rozias0925.github.io/FY26-Spectral-Graph-Lab/), switch to **EN**, select **Chapter III / Spectral Clustering**, and compare original-space K-Means with a spectral partition on the two-moons example. **Inspect the implementation:** [mathematical core](js/math.js) and [tests](tests/). Numerical limits and normalization conventions are documented below and in the detailed guides.
+
+
 An interactive laboratory connecting graph structure to spectral representations: edit a weighted graph, inspect its Laplacian and eigenvectors, and explore clustering, smoothness, signal filtering, and local graph operations. The aim is to make the relationship between linear algebra and graph-based computation directly inspectable. The complete browser implementation, numerical routines, and tests are included in this repository.
 
 [Open the interactive lab](https://rozias0925.github.io/FY26-Spectral-Graph-Lab/) · [Detailed technical guide](README.en.md) · [繁體中文技術說明](README.zh-TW.md)
