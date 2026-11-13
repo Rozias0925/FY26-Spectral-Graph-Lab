@@ -1,6 +1,6 @@
 # Spectral Graph Lab
 
-[繁體中文](README.md) · Royal navy theme · Rozias Mathematical Labs
+[Project overview](README.md) · [繁體中文](README.zh-TW.md) · Royal navy theme · Rozias Mathematical Labs
 
 A local interactive laboratory for graph Laplacians, Fiedler vectors, spectral clustering, and mesh modes, followed by graph functions, smoothness energy, variational principles, Fourier filtering, and graph convolution. It is a static site that can be published directly with GitHub Pages without a build step.
 
